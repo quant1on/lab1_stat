@@ -61,7 +61,7 @@ def count_generated_points(a: float, r: float, n: int = 25) -> int:
     
     return cnt
 
-def get_precision_count(a: float, r: float, err: float = 1e-4, max_iter: int = 1e4) -> int:
+def get_precision_count(a: float, r: float, err: float = 1e-4, max_iter: int = 1e4, gap: int = 1) -> int:
     """Рассчитать кол-во точек, нужных для выведения истинной вероятности
 
     Args:
@@ -75,6 +75,7 @@ def get_precision_count(a: float, r: float, err: float = 1e-4, max_iter: int = 1
     """
 
     r = min(a, r)
+    gap = max(abs(gap), 1)
     true_prob = get_true_probability(a, r)
     N = 1
     while (max_iter > 0):
@@ -83,7 +84,7 @@ def get_precision_count(a: float, r: float, err: float = 1e-4, max_iter: int = 1
         if abs(true_prob - prob) < err:
             break
         
-        N += 1
+        N += gap
         max_iter -= 1
         
     return N
